@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>Google Translate</title>
+</head>
+<body>
+<div class="container">
+    <div class="form-group">
+        <label for="english">English:</label>
+        <input type="text" id="english" class="english form-control" placeholder="Type English text and press Tab.">
+    </div>
+
+</div>
+</body>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var obj = {"AF":"Afrikaans", "SQ": "Albanian", "AM": "Amharic", "AR": "Arabic", "HY": "Armenian" , "AZ": "Azerbaijani", "EU": "Basque", "BE": "Belarusian", "BN": "Bengali",
+            "BS": "Bosnian",
+            "BG": "Bulgarian",
+            "CA": "Catalan",
+            "CEB": "Cebuano",
+            "NY": "Chichewa",
+            "ZH-CN": "Chinese Simplified",
+            "ZH-TW": "Chinese Traditional",
+            "CO": "Corsican",
+            "HR": "Croatian",
+            "CS": "Czech",
+            "DA": "Danish",
+            "NL": "Dutch",
+            "EN": "English",
+            "EO": "Esperanto",
+            "ET": "Estonian",
+            "TL": "Filipino",
+            "FI": "Finnish",
+            "FR": "French",
+            "FY": "Frisian",
+            "GL": "Galician",
+            "KA": "Georgian",
+            "DE": "German",
+            "EL": "Greek",
+            "GU": "Gujarati",
+            "HT": "Haitian Creole",
+            "HA": "Hausa",
+            "HAW": "Hawaiian",
+            "IW": "Hebrew",
+            "HI": "Hindi",
+            "HMN": "Hmong",
+            "HU": "Hungarian",
+            "IS": "Icelandic",
+            "IG": "Igbo",
+            "ID": "Indonesian",
+            "GA": "Irish",
+            "IT": "Italian",
+            "JA": "Japanese",
+            "JW": "Javanese",
+            "KN": "Kannada",
+            "KK": "Kazakh",
+            "KM": "Khmer",
+            "KO": "Korean",
+            "KU": "Kurdish",
+            "KY": "Kyrgyz",
+            "LO": "Lao",
+            "LA": "Latin",
+            "LV": "Latvian",
+            "LT": "Lithuanian",
+            "LB": "Luxembourgish",
+            "MK": "Macedonian",
+            "MG": "Malagasy",
+            "MS": "Malay",
+            "ML": "Malayalam",
+            "MT": "Maltese",
+            "MI": "Maori",
+            "MR": "Marathi",
+            "MN": "Mongolian",
+            "MY": "Myanmar",
+            "NE": "Nepali",
+            "NO": "Norwegian",
+            "PS": "Pashto",
+            "FA": "Persian",
+            "PL": "Polish",
+            "PT": "Portuguese",
+            "PA": "Punjabi",
+            "RO": "Romanian",
+            "RU": "Russian",
+            "SM": "Samoan",
+            "GD": "Scots Gaelic",
+            "SR": "Serbian",
+            "ST": "Sesotho",
+            "SN": "Shona",
+            "SD": "Sindhi",
+            "SI": "Sinhala",
+            "SK": "Slovak",
+            "SL": "Slovenian",
+            "SO": "Somali",
+            "ES": "Spanish",
+            "SU": "Sundanese",
+            "SW": "Swahili",
+            "SV": "Swedish",
+            "TG": "Tajik",
+            "TA": "Tamil",
+            "TE": "Telugu",
+            "TH": "Thai",
+            "TR": "Turkish",
+            "UK": "Ukrainian",
+            "UR": "Urdu",
+            "UZ": "Uzbek",
+            "VI": "Vietnamese",
+            "CY": "Welsh",
+            "XH": "Xhosa",
+            "YI": "Yiddish",
+            "YO": "Yoruba",
+            "ZU": "Zulu",
+            "RU" : "Russian"
+        };
+
+        $( ".english" ).focusout(function( event ) {
+            for (var index in obj) {
+                var queryText = $(this).val();
+                langauges(queryText, index, obj);
+            }
+        });
+
+        function langauges(queryText, index, obj) {
+            var lang = '';
+            var text = "";
+            var sourceText = queryText;
+            var sourceLang = 'en';
+            var targetLang = index.toLowerCase();
+            var id = obj[index].toLowerCase();
+            var url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" + sourceLang + "&tl=" + targetLang + "&dt=t&q=" + encodeURI(sourceText);
+            $.getJSON(url, function () {
+            }).done(function (json) {
+                text += json[0][0][0];
+                //$("#" +id.replace(/\s/g, '')).attr({value: text});
+
+                lang += '<div class="list-group">';
+                lang += '<a href="#" class="list-group-item active">';
+                lang +=' <h2 class="list-group-item-heading">'+obj[index]+'</h2>';
+                lang +='<p class="list-group-item-text">'+text+'</p>';
+                lang += '</a>';
+                lang += '</div>';
+                $(".container").append(lang);
+                text = ' ';
+            })
+                .fail(function() {
+                    console.log( "error" );
+                })
+                .always(function() {
+                    console.log( "complete" );
+                });
+        }
+    });
+</script>
+</html>
